@@ -3,10 +3,11 @@ import {getActiveUsersToday} from './function.js'
 dotenv.config({ path: "../.env" });
 
 import OpenAI from "openai";
+import GLOBAL from "../shared/envs_enum.js";
 
 const client = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1"
+  apiKey: GLOBAL.GROQ_API_KEY,
+  baseURL: GLOBAL.GROQ_API_URL
 });
 
 // TOOLS 
@@ -31,7 +32,7 @@ async function main(){
     }];
 
     const response = await client.chat.completions.create({
-        model: process.env.model,
+        model: GLOBAL.model,
         messages,
         tools
     })
@@ -62,7 +63,7 @@ async function main(){
 
         // Make follow-up request with tool result
         const finalResponse = await client.chat.completions.create({
-            model: process.env.model,
+            model: GLOBAL.model,
             messages
         });
 
