@@ -6,7 +6,7 @@ import GLOBAL from "../shared/envs_enum.js";
 
 const client = new OpenAI({
   apiKey: GLOBAL.GROQ_API_KEY,
-  baseURL: GLOBAL.GROQ_API_URL
+  baseURL: GLOBAL.GROQ_API_URL,
 });
 
 const response = await client.chat.completions.create({
@@ -14,9 +14,9 @@ const response = await client.chat.completions.create({
   messages: [
     {
       role: "user",
-      content: "Explain embeddings"
-    }
-  ]
+      content: "Explain embeddings",
+    },
+  ],
 });
 
 console.log(response.choices[0].message.content);

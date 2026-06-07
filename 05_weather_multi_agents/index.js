@@ -61,7 +61,6 @@ async function main() {
   console.log(`User Query: ${messages[0].content}\n`);
 
   // Agent loop - handle multiple tool calls
-  let weatherData = null;
   let isRunning = true;
 
   while (isRunning) {
@@ -86,18 +85,17 @@ async function main() {
         console.log(`\n→ Executing: ${toolCall.function.name}`);
 
         const args = JSON.parse(toolCall.function.arguments);
-        console.log(`  Arguments:`, args);
+        console.log("  Arguments:", args);
 
         let toolResult;
 
         // Execute the appropriate tool
         if (toolCall.function.name === "todaysWeather") {
           toolResult = await todaysWeather(args.city);
-          weatherData = toolResult;
-          console.log(`  Result:`, toolResult);
+          console.log("  Result:", toolResult);
         } else if (toolCall.function.name === "convertTemperature") {
           toolResult = await convertTemperature(args.celsius);
-          console.log(`  Result:`, toolResult);
+          console.log("  Result:", toolResult);
         }
 
         // Add tool result to messages
@@ -110,7 +108,7 @@ async function main() {
     } else {
       // No more tool calls needed - get final response
       isRunning = false;
-      console.log(`\n=== FINAL RESPONSE ===`);
+      console.log("\n=== FINAL RESPONSE ===");
       console.log(response.choices[0].message.content);
     }
   }
