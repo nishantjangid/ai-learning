@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "groq-sdk": "^1.2.1",
+    "openai": "^6.39.1",
+    "tiktoken": "^1.0.22"
+  }
+}
