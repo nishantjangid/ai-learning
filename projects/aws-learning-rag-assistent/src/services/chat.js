@@ -1,48 +1,46 @@
-import dotenv from "dotenv";
 import OpenAI from "openai";
 
-dotenv.config({ path:"../../../.env" });
+import { getEnv } from "../config/env.js";
 
-const client =
- new OpenAI({
-   apiKey: process.env.GROQ_API_KEY,
-   baseURL: process.env.GROQ_API_URL,
- });
+const apiKey = getEnv("GROQ_API_KEY") || getEnv("OPENAI_API_KEY");
+const baseURL = getEnv("GROQ_API_URL") || getEnv("OPENAI_BASE_URL") || "https://api.groq.com/openai/v1";
+const model = getEnv("MODEL") || "openai/gpt-oss-120b";
 
-export async function askLLM(
-  question,
-  context,
-) {
+function createClient() {
+  if (!apiKey) {
+    throw new Error("Missing API credentials. Set GROQ_API_KEY or OPENAI_API_KEY in your .env file.");
+  }
 
-  const response =
- await client.chat.completions.create({
+  return new OpenAI({
+    apiKey,
+    baseURL,
+  });
+}
 
-   model:
- process.env.MODEL,
+export async function askLLM(question, context) {
+  const client = createClient();
+  const response = await client.chat.completions.create({
+    model,
 
-   messages:[
-     {
-       role:"system",
-       content:
-   `You are an AWS expert.
+    messages: [
+      {
+        role: "system",
+        content: `You are an AWS expert.
     Answer only using
     retrieved context.`,
-     },
-     {
-       role:"user",
-       content:
-`
+      },
+      {
+        role: "user",
+        content: `
 Context:
 ${context}
 
 Question:
 ${question}
 `,
-     },
-   ],
- });
+      },
+    ],
+  });
 
-  return response
-    .choices[0]
-    .message.content;
+  return response.choices[0].message.content;
 }

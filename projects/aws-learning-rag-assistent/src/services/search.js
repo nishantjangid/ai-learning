@@ -1,26 +1,14 @@
-import { prisma }
-  from "../config/prisma.js";
+import { prisma } from "../config/prisma.js";
 
-import {
-  createEmbedding,
-}
-  from "./embedder.js";
+import { createEmbedding } from "./embedder.js";
 
-export async function searchDocs(
-  question,
-) {
+export async function searchDocs(question) {
+  const embedding = await createEmbedding(question);
 
-  const embedding =
-   await createEmbedding(
-     question,
-   );
+  const vector = `[${embedding.join(",")}]`;
 
-  const vector =
-   `[${embedding.join(",")}]`;
-
-  const results =
-   await prisma.$queryRawUnsafe(
-     `
+  const results = await prisma.$queryRawUnsafe(
+    `
 SELECT
  id,
  source,
@@ -35,8 +23,8 @@ ORDER BY distance
 
 LIMIT 5
 `,
-     vector,
-   );
+    vector,
+  );
 
   return results;
 }
