@@ -45,7 +45,7 @@ projects/aws-learning-rag-assistent/
 - Node.js 18 or newer
 - Docker Desktop
 - Ollama running locally with the `nomic-embed-text` model available
-- A `.env` file with the required environment variables
+- A `.env` file with the required environment variables, loaded through a shared helper in the project config
 
 ## Setup
 
@@ -65,6 +65,7 @@ projects/aws-learning-rag-assistent/
    MODEL=openai/gpt-oss-120b
    OLLAMA_URL=http://localhost:11434
    ```
+   The app reads these values through the shared environment helper in [projects/aws-learning-rag-assistent/src/config/env.js](projects/aws-learning-rag-assistent/src/config/env.js).
 4. Start PostgreSQL:
    ```bash
    npm run db:up
@@ -102,6 +103,7 @@ npm run up:all     # start the database and launch the app
 
 - The app prompts you with “Ask AWS Question:” and uses semantic search over stored document chunks.
 - The ingestion step stores chunks and embeddings in the `document_chunks` table.
+- The app uses a shared environment helper for `.env` loading, so configuration is centralized and easier to maintain.
 - If the database is not running, the app will fail with a Prisma connection error until `npm run db:up` succeeds.
 
 ## Contributing
