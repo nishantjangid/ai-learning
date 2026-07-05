@@ -7,10 +7,10 @@ import { prompt } from "./langchain/prompts/prompt.js";
 
 // console.log(response.content);
 const formatPrompt = await prompt.invoke({
-    context:"you need to answer only around aws",
-    question:"What is aws and its services"
-})
+  context: "you need to answer only around aws",
+  question: "What is aws and its services",
+});
 
-const answer = await llm.invoke(formatPrompt)
+const answer = await llm.invoke(formatPrompt);
 
-console.log(answer.content)
+console.log(answer.content);

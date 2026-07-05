@@ -18,9 +18,7 @@ class OllamaEmbeddingAdapter extends Embeddings {
 
     // Process sequentially to avoid Ollama timeout
     for (let i = 0; i < texts.length; i++) {
-      console.log(
-        `Embedding ${i + 1}/${texts.length}`
-      );
+      console.log(`Embedding ${i + 1}/${texts.length}`);
 
       const vector = await this.embedQuery(texts[i]);
 
@@ -38,23 +36,17 @@ const embeddings = new OllamaEmbeddingAdapter({
   baseUrl: getEnv("OLLAMA_URL", "http://127.0.0.1:11434"),
 });
 
-export const vectorStore =
-await PGVectorStore.initialize(
-    embeddings,
-    {
-        postgresConnectionOptions: {
-            connectionString:
-                getEnv("DATABASE_URL"),
-        },
+export const vectorStore = await PGVectorStore.initialize(embeddings, {
+  postgresConnectionOptions: {
+    connectionString: getEnv("DATABASE_URL"),
+  },
 
-        tableName:
-            "langchain_documents",
+  tableName: "langchain_documents",
 
-        columns: {
-            idColumnName: "id",
-            contentColumnName: "content",
-            vectorColumnName: "embedding",
-            metadataColumnName: "metadata",
-        },
-    }
-);
+  columns: {
+    idColumnName: "id",
+    contentColumnName: "content",
+    vectorColumnName: "embedding",
+    metadataColumnName: "metadata",
+  },
+});

@@ -25,30 +25,19 @@ async function ingest() {
   for (let i = 0; i < splitDocs.length; i += batchSize) {
     const batch = splitDocs.slice(i, i + batchSize);
 
-    console.log(
-      `Batch ${i / batchSize + 1} / ${Math.ceil(
-        splitDocs.length / batchSize
-      )}`
-    );
+    console.log(`Batch ${i / batchSize + 1} / ${Math.ceil(splitDocs.length / batchSize)}`);
 
     await vectorStore.addDocuments(batch);
 
-    console.log(
-      `Inserted ${Math.min(
-        i + batchSize,
-        splitDocs.length
-      )}/${splitDocs.length}`
-    );
+    console.log(`Inserted ${Math.min(i + batchSize, splitDocs.length)}/${splitDocs.length}`);
   }
 
   const after = await prisma.langchainDocument.count();
 
-  console.log(
-    `Inserted ${after - before} documents`
-  );
+  console.log(`Inserted ${after - before} documents`);
 
   console.log("Done ✅");
-  process.exit(1)
+  process.exit(1);
 }
 
 ingest()

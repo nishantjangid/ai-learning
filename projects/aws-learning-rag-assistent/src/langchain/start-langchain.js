@@ -1,7 +1,7 @@
 import readline from "readline";
 
-import { retriever } from "./langchain/retrievers/retriever.js";
-import { chain } from "./langchain/chains/chain.js";
+import { retriever } from "./retrievers/retriever.js";
+import { chain } from "./chains/chain.js";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -15,6 +15,7 @@ function askQuestion() {
   rl.question("You: ", async (question) => {
     if (question.toLowerCase() === "exit") {
       rl.close();
+      process.exit(1)
       return;
     }
 
