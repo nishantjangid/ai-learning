@@ -15,7 +15,7 @@ function askQuestion() {
   rl.question("You: ", async (question) => {
     if (question.toLowerCase() === "exit") {
       rl.close();
-      process.exit(1)
+      process.exit(1);
       return;
     }
 
@@ -24,9 +24,7 @@ function askQuestion() {
 
       const docs = await retriever.invoke(question);
 
-      const context = docs
-        .map((doc) => doc.pageContent)
-        .join("\n\n");
+      const context = docs.map((doc) => doc.pageContent).join("\n\n");
 
       const answer = await chain.invoke({
         question,
